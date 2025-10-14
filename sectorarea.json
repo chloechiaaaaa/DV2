@@ -1,0 +1,120 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Sector contributions over time — Stacked area (by State)",
+  "data": { "url": "GHG_Inventory_State.csv" },
+
+  "params": [
+    {
+      "name": "state_sel",
+      "value": "VIC",
+      "bind": {
+        "input": "select",
+        "options": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"],
+        "name": "State: "
+      }
+    }
+  ],
+
+  "transform": [
+    { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
+    { "filter": "datum.State == state_sel" },
+    { "filter": "indexof(datum.Category, 'Total (net emissions)') < 0" },
+    { "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))", "as": "E_Gg" },
+    { "calculate": "replace(datum.Category, '  ', ' ')", "as": "CatLabel" },
+    { "aggregate": [{ "op": "sum", "field": "E_Gg", "as": "E_Gg" }], "groupby": ["YearNum","CatLabel"] },
+    {
+      "calculate": "indexof(datum.CatLabel, 'Energy')>=0 ? 1 : indexof(datum.CatLabel, 'Industrial')>=0 ? 2 : indexof(datum.CatLabel, 'Agriculture')>=0 ? 3 : indexof(datum.CatLabel, 'Land Use')>=0 ? 4 : indexof(datum.CatLabel, 'Waste')>=0 ? 5 : 999",
+      "as": "CatOrderNum"
+    }
+  ],
+
+  "vconcat": [
+    {
+      "width": 1100,
+      "height": 320,
+      "mark": { "type": "area", "clip": true },
+      "encoding": {
+        "x": {
+          "field": "YearNum",
+          "type": "quantitative",
+          "axis": { "title": "Year", "format": "d", "tickMinStep": 1 },
+          "scale": { "domain": { "param": "brush" } }
+        },
+        "y": {
+          "field": "E_Gg",
+          "type": "quantitative",
+          "axis": { "title": "Emissions (Gg CO₂-e)" },
+          "stack": "zero"
+        },
+        "color": {
+          "field": "CatLabel",
+          "type": "nominal",
+          "title": "Sector",
+          "scale": {
+            "domain": [
+              "1. Energy",
+              "2. Industrial Processes",
+              "3. Agriculture",
+              "4. Land Use, Land-Use Change and Forestry",
+              "5. Waste"
+            ],
+            "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
+          },
+          "sort": [{ "field": "CatOrderNum", "order": "ascending" }]
+        },
+        "order": { "field": "CatOrderNum", "type": "quantitative" },
+        "tooltip": [
+          { "field": "CatLabel", "title": "Sector" },
+          { "field": "YearNum", "title": "Year" },
+          { "field": "E_Gg", "title": "Emissions (Gg)", "format": "," }
+        ]
+      }
+    },
+    {
+      "width": 1100,
+      "height": 80,
+      "mark": { "type": "area", "opacity": 0.7, "color": "#b5d2f5" },
+      "params": [
+        { "name": "brush", "select": { "type": "interval", "encodings": ["x"] } }
+      ],
+      "encoding": {
+        "x": {
+          "field": "YearNum",
+          "type": "quantitative",
+          "axis": { "title": "Brush to zoom", "format": "d", "tickMinStep": 1 }
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "E_Gg",
+          "type": "quantitative",
+          "axis": null
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "background": "#f5f0e6",
+    "view": { "stroke": null, "fill": "white" },
+    "axis": {
+      "grid": true,
+      "gridColor": "#dbe4f0",
+      "tickColor": "#c7d4e6",
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "labelFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      "titleFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    },
+    "legend": {
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "symbolType": "circle"
+    },
+    "title": {
+      "color": "#0f172a",
+      "font": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      "fontWeight": 700
+    },
+    "numberFormat": ","
+  }
+}

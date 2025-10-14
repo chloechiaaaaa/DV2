@@ -1,0 +1,91 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 620,
+  "projection": { "type": "mercator", "center": [134, -27], "scale": 850 },
+  "title": "GHG Emissions by Australian State (2017–2022)",
+
+  "params": [
+    {
+      "name": "year_sel",
+      "value": 2020,
+      "bind": { "input": "range", "min": 2017, "max": 2022, "step": 1, "name": "Year: " }
+    }
+  ],
+
+  "layer": [
+    {
+      "data": { "graticule": { "step": [10, 10] } },
+      "mark": { "type": "geoshape", "stroke": "#c9d7ea", "strokeWidth": 0.6, "filled": false, "clip": true }
+    },
+
+    {
+      "data": { "url": "GHG_Inventory_State.csv", "format": { "type": "csv" } },
+      "transform": [
+        { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
+        { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },
+        { "filter": "datum.YearNum == year_sel" },
+
+        { "calculate": "datum.State", "as": "state_abbr" },
+        {
+          "calculate": "datum.state_abbr === 'NSW' ? 'New South Wales' : datum.state_abbr === 'VIC' ? 'Victoria' : datum.state_abbr === 'QLD' ? 'Queensland' : datum.state_abbr === 'SA' ? 'South Australia' : datum.state_abbr === 'WA' ? 'Western Australia' : datum.state_abbr === 'TAS' ? 'Tasmania' : datum.state_abbr === 'NT' ? 'Northern Territory' : datum.state_abbr === 'ACT' ? 'Australian Capital Territory' : null",
+          "as": "state_full"
+        },
+
+        {
+          "lookup": "state_full",
+          "from": {
+            "data": {
+              "url": "STE_2021_AUST_GDA2020.json",
+              "format": { "type": "topojson", "feature": "STE_2021_AUST_GDA2020" }
+            },
+            "key": "properties.STE_NAME21",
+            "fields": ["geometry"]
+          }
+        },
+
+        { "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))", "as": "E_Gg" }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 1 },
+      "encoding": {
+        "shape": { "field": "geometry", "type": "geojson" },
+        "color": {
+          "field": "E_Gg",
+          "type": "quantitative",
+          "title": "t CO₂-e (Gg)",
+          "scale": { "range": ["#fde0dd", "#fca6a6", "#fb6a6a", "#d42020", "#7f0000"] }
+        },
+        "tooltip": [
+          { "field": "state_full", "title": "State" },
+          { "field": "Year", "title": "Year" },
+          { "field": "E_Gg", "title": "Emissions (Gg CO₂-e)", "format": "," }
+        ]
+      }
+    }
+  ],
+
+  "config": {
+    "background": "#f5f0e6",
+    "view": { "stroke": null, "fill": "white" },
+    "axis": {
+      "grid": true,
+      "gridColor": "#dbe4f0",
+      "tickColor": "#c7d4e6",
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "labelFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      "titleFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    },
+    "legend": {
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "gradientLength": 180
+    },
+    "title": {
+      "color": "#0f172a",
+      "font": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      "fontWeight": 700
+    },
+    "numberFormat": ","
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "GHG Total (net) Emission by State — 2017–2023 (small multiples)",
+  "data": { "url": "GHG_Inventory_State.csv" },
+
+  "transform": [
+    { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },
+    { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
+    { "filter": "datum.YearNum >= 2017 && datum.YearNum <= 2022" },
+    { "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))", "as": "E_Gg" }
+  ],
+
+  "facet": {
+    "field": "State",
+    "type": "nominal",
+    "sort": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"],
+    "title": null,
+    "header": { "labelFontWeight": 700 }
+  },
+  "columns": 4,
+
+  "spec": {
+    "width": 240,
+    "height": 150,
+    "layer": [
+      { "mark": { "type": "line", "point": true } },
+      {
+        "transform": [
+          { "window": [{ "op": "rank", "as": "rk" }], "sort": [{ "field": "YearNum", "order": "descending" }], "groupby": ["State"] },
+          { "filter": "datum.rk == 1" }
+        ],
+        "mark": { "type": "text", "dx": 6, "align": "left", "baseline": "middle", "fontSize": 11 },
+        "encoding": {
+          "x": { "field": "YearNum", "type": "quantitative" },
+          "y": { "field": "E_Gg", "type": "quantitative" },
+          "text": { "field": "E_Gg", "type": "quantitative", "format": "," },
+          "color": { "value": "#334155" }
+        }
+      }
+    ],
+    "encoding": {
+      "x": {
+        "field": "YearNum",
+        "type": "quantitative",
+        "axis": { "title": "Year", "format": "d", "tickMinStep": 1, "labelAngle": 0 }
+      },
+      "y": { "field": "E_Gg", "type": "quantitative", "title": "Emissions (Gg CO₂-e)" },
+      "color": { "value": "#334155" },
+      "tooltip": [
+        { "field": "State", "title": "State" },
+        { "field": "Year", "title": "Year (FY)" },
+        { "field": "E_Gg", "title": "Emissions (Gg CO₂-e)", "format": "," }
+      ]
+    }
+  },
+
+  "resolve": {
+    "scale": { "y": "independent" },
+    "axis":  { "x": "independent" }
+  },
+
+  "config": {
+    "background": "#f5f0e6",  
+    "view": { "stroke": null, "fill": "white" },  
+    "axis": {
+      "grid": true,
+      "gridColor": "#dbe4f0",
+      "tickColor": "#c7d4e6",
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "labelFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      "titleFont": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    },
+    "legend": {
+      "labelColor": "#0f172a",
+      "titleColor": "#0f172a",
+      "symbolType": "circle"
+    }
+  }
+}

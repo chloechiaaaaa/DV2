@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DV2 — Australia GHG</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    :root {
+      --gap: 24px;
+      --card-bg: #ffffff;
+      --page-bg: #FFF8E7;   /* Cosmic Latte */
+      --ink: #0f172a;
+      --subink: #475569;
+      --grid: #efe7d1;      /* warm grid tint */
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      margin: var(--gap);
+      background: var(--page-bg);
+      color: var(--ink);
+    }
+    h2 { margin: 0 0 8px 0; letter-spacing: .2px; }
+    .section {
+      max-width: 1200px; margin: 32px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.08);
+      padding: 20px 18px;
+    }
+    .subheading { margin: 6px 0 12px; font-weight: 700; color: var(--subink); }
+    .blurb {
+      max-width: 1100px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--subink);
+      margin: 8px 0 20px 0;
+    }
+    #vis, #line, #sectorArea, #brushTrend { max-width: 1200px; }
+    hr { border: 0; height: 1px; background: rgba(15,23,42,.06); margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h2>Australian GHG Emissions by State (2017–2022)</h2>
+  <p class="blurb">
+    This dashboard tracks Australia’s state-level greenhouse-gas (GHG) emissions from 2017–2022 (Gg CO₂-e).
+    It highlights where emissions are concentrated, how they change over time, and which sectors drive those changes.
+    <b>Queensland</b> and <b>New South Wales</b> consistently account for the largest shares, reflecting larger populations and energy-intensive activity.
+    <b>Tasmania</b> stands out with net-negative totals—strong land-sector absorption offsets other sources.
+    Overall, most states trend modestly down across the period, with 2020 marking a noticeable dip for several states, followed by partial rebounds.
+  </p>
+
+  <!-- MAP -->
+  <div class="section" aria-label="Choropleth map">
+    <div class="subheading">Map — Where emissions are concentrated</div>
+    <p class="blurb">
+      Colour intensity shows each state’s total net emissions in the selected year (darker = higher).
+      Use the <b>Year</b> slider to observe year-to-year changes: QLD and NSW remain highest; TAS is typically light due to net-negative balance.
+    </p>
+    <div id="vis"></div>
+  </div>
+
+  <hr />
+
+  <!-- LINE CHART (small multiples) -->
+  <div class="section" aria-label="Small multiples by state">
+    <div class="subheading">Trends by State (2017–2022) — Small multiples</div>
+    <p class="blurb">
+      Each panel shows a state’s net total across time (independent y-scales emphasise within-state change).
+      Most states decline gradually, a clear dip appears around <b>2020</b>, and <b>Tasmania</b> remains net-negative throughout.
+    </p>
+    <div id="line"></div>
+  </div>
+
+  <hr />
+
+  <!-- STACKED AREA -->
+  <div class="section" aria-label="Sector mix over time">
+    <div class="subheading">Sector mix over time (stacked area)</div>
+    <p class="blurb">
+      Stacked areas display sector contributions to a selected state’s total.
+      <b>Energy</b> dominates in most states; negative values in <b>Land-use, Land-Use Change &amp; Forestry</b> can offset other sources,
+      explaining Tasmania’s net-negative totals. Use the dropdown to change state and the brush to zoom specific years.
+    </p>
+    <div id="sectorArea"></div>
+  </div>
+
+  <script>
+    vegaEmbed('#vis', 'map.json', { actions: false }).catch(console.error);
+    vegaEmbed('#line', 'line.json', { actions: false }).catch(console.error);
+    vegaEmbed('#sectorArea', 'sectorarea.json', { actions: false }).catch(console.error);
+  </script>
+</body>
+</html>
