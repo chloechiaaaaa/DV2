@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Sector contributions over time — Stacked area (by State)",
-  "data": { "url": "GHG_Inventory_State.csv" },
+  "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv" },
 
   "params": [
     {

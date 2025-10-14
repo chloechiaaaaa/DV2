@@ -20,7 +20,7 @@
     },
 
     {
-      "data": { "url": "GHG_Inventory_State.csv", "format": { "type": "csv" } },
+      "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv", "format": { "type": "csv" } },
       "transform": [
         { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
         { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },

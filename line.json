@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "GHG Total (net) Emission by State — 2017–2023 (small multiples)",
-  "data": { "url": "GHG_Inventory_State.csv" },
+  "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv" },
 
   "transform": [
     { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },
