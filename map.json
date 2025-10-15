@@ -50,11 +50,17 @@
       "encoding": {
         "shape": { "field": "geometry", "type": "geojson" },
         "color": {
-          "field": "E_Gg",
-          "type": "quantitative",
-          "title": "t CO₂-e (Gg)",
-          "scale": { "range": ["#fde0dd", "#fca6a6", "#fb6a6a", "#d42020", "#7f0000"] }
+        "field": "E_Gg",
+        "type": "quantitative", 
+        "title": "t CO₂-e (Gg)",
+        "scale": {
+          "domain": [-5000, 130000],     
+          "range": ["#fde0dd", "#fca6a6", "#fb6a6a", "#d42020", "#7f0000"],
+          "clamp": true
         },
+        "legend": {"format": ",.0f"}
+      },
+
         "tooltip": [
           { "field": "state_full", "title": "State" },
           { "field": "Year", "title": "Year" },
