@@ -38,10 +38,11 @@
       color: var(--subink);
       margin: 8px 0 20px 0;
     }
-    #vis, #line, #sectorArea, #brushTrend { max-width: 1200px; }
+    #vis, #line, #sectorArea, #heatmap { max-width: 1200px; }
     hr { border: 0; height: 1px; background: rgba(15,23,42,.06); margin: 12px 0; }
   </style>
 </head>
+
 <body>
   <h2>Australian GHG Emissions by State (2017–2022)</h2>
   <p class="blurb">
@@ -87,10 +88,24 @@
     <div id="sectorArea"></div>
   </div>
 
+  <hr />
+
+  <!-- HEATMAP -->
+  <div class="section" aria-label="Emission Intensity heatmap">
+    <div class="subheading">Emission Intensity by State (2017–2022)</div>
+    <p class="blurb">
+      This heatmap compares <b>emission intensity</b> (t CO₂-e per capita) across all states and years.
+      Darker cells indicate higher emissions per person — revealing which states remain carbon-intensive and which have improved efficiency over time.
+    </p>
+    <div id="heatmap"></div>
+  </div>
+
+  <!-- ✅ Embed all visualisations here -->
   <script>
     vegaEmbed('#vis', 'map.json', { actions: false }).catch(console.error);
     vegaEmbed('#line', 'line.json', { actions: false }).catch(console.error);
     vegaEmbed('#sectorArea', 'sectorarea.json', { actions: false }).catch(console.error);
+    vegaEmbed('#heatmap', 'heatmap.json', { actions: false }).catch(console.error);
   </script>
 </body>
 </html>

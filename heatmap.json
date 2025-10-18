@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Emission Intensity by State (2017–2022)",
+  "data": {
+    "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/Emission_Intensity.csv"
+  },
+  "transform": [
+    { "calculate": "toNumber(substring(datum.Year, 0, 4))", "as": "YearStart" },
+    { "filter": "datum.YearStart >= 2017 && datum.YearStart <= 2022" }
+  ],
+  "mark": "rect",
+  "encoding": {
+    "x": { "field": "Year", "type": "ordinal", "title": "Year" },
+    "y": {
+      "field": "Attribute",
+      "type": "nominal",
+      "title": null,
+      "sort": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"]
+    },
+    "color": {
+      "field": "Value",
+      "type": "quantitative",
+      "title": "Emission Intensity (t CO₂-e per capita)",
+      "scale": { "scheme": "reds" }
+    },
+    "tooltip": [
+      { "field": "Attribute", "title": "State" },
+      { "field": "Year" },
+      { "field": "Value", "title": "Intensity", "format": ".2f" }
+    ]
+  },
+  "config": {
+    "view": { "stroke": "transparent" },
+    "axis": { "grid": false },
+    "background": "#FFF8E7"
+  },
+  "width": 650,
+  "height": 300
+}
