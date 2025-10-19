@@ -1,159 +1,182 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Australia — Sector shares by year (donut shows |magnitude|, tooltips show signed values)",
-  "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv" },
 
-  "params": [
+  "title": {
+    "text": "Australia — Sector emissions by year"
+  },
+
+  "data": {
+    "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv"
+  },
+
+  "width": 760,
+  "height": 380,
+
+  "transform": [
+    { "calculate": "replace(datum['IPCC emissions source and sink categories'], '  ', ' ')", "as": "CatLabel" },
+    { "filter": "datum.Attribute != null" },
+    { "calculate": "toNumber(datum.Value)", "as": "E_Gg" },
     {
-      "name": "year_sel",
-      "value": "2022-23",
-      "bind": {
-        "input": "select",
-        "options": ["2017-18","2018-19","2019-20","2020-21","2021-22","2022-23"],
-        "name": "Year: "
-      }
+      "calculate": "datum.CatLabel == '4. Land Use, Land-Use Change and Forestry' ? '4. Land Use & Forestry (LULUCF)' : datum.CatLabel",
+      "as": "SectorShort"
     }
   ],
 
-  "hconcat": [
+  "layer": [
     {
-      "width": 520,
-      "height": 420,
       "transform": [
-        { "filter": "datum.Attribute == year_sel" },
-        { "calculate": "replace(datum['IPCC emissions source and sink categories'], '  ', ' ')", "as": "CatLabel" },
-        { "filter": "datum.CatLabel != 'Total (net emissions)'" },
-        { "calculate": "abs(datum.Value)", "as": "Mag" },
-        {
-          "joinaggregate": [
-            { "op": "sum", "field": "Mag", "as": "SumMag" }
-          ],
-          "groupby": ["Attribute"]
-        },
-        { "calculate": "datum.Mag / datum.SumMag", "as": "MagShare" }
+        { "filter": "datum.SectorShort != 'Total (net emissions)'" },
+        { "aggregate": [{ "op": "sum", "field": "E_Gg", "as": "E_Sum" }], "groupby": ["Attribute", "SectorShort"] },
+        { "joinaggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["Attribute"] },
+        { "calculate": "datum.E_Sum / datum.YearTotal", "as": "Share" }
       ],
-      "layer": [
-        {
-          "mark": { "type": "arc", "outerRadius": 180, "innerRadius": 90, "stroke": "#fff" },
-          "encoding": {
-            "theta": { "field": "Mag", "type": "quantitative", "stack": true },
-            "color": {
-              "field": "CatLabel",
-              "type": "nominal",
-              "title": "Sector",
-              "scale": {
-                "domain": [
-                  "1. Energy",
-                  "2. Industrial Processes",
-                  "3. Agriculture",
-                  "4. Land Use, Land-Use Change and Forestry",
-                  "5. Waste"
-                ],
-                "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
-              }
-            },
-            "tooltip": [
-              { "field": "CatLabel", "title": "Sector" },
-              { "field": "Attribute", "title": "Year" },
-              { "field": "Value", "title": "Emissions (Gg CO₂-e, signed)", "format": "," },
-              { "field": "MagShare", "title": "Share of |total|", "format": ".1%" }
-            ]
+      "mark": { "type": "bar", "cornerRadiusEnd": 2 },
+      "encoding": {
+        "x": {
+          "field": "Attribute",
+          "type": "ordinal",
+          "title": null,
+          "sort": ["2017-18","2018-19","2019-20","2020-21","2021-22","2022-23"],
+          "axis": { "labelAngle": 0 }
+        },
+        "y": {
+          "field": "E_Sum",
+          "type": "quantitative",
+          "title": "Emissions (Gg CO₂-e)",
+          "stack": true,
+          "axis": { "format": "," }
+        },
+        "color": {
+          "field": "SectorShort",
+          "type": "nominal",
+          "title": "Sector",
+          "scale": {
+            "domain": [
+              "1. Energy",
+              "2. Industrial Processes",
+              "3. Agriculture",
+              "4. Land Use & Forestry (LULUCF)",
+              "5. Waste"
+            ],
+            "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
+          },
+          "legend": {
+            "orient": "right",
+            "title": "Sector",
+            "direction": "vertical",
+            "titleFontWeight": "bold",
+            "titleFontSize": 12,
+            "labelFontSize": 11,
+            "labelLimit": 180,
+            "labelColor": "#0f172a",
+            "titleColor": "#0f172a",
+            "symbolType": "circle",
+            "symbolSize": 150,
+            "symbolStrokeWidth": 1.5,
+            "symbolOpacity": 0.9,
+            "titlePadding": 8
           }
         },
-        {
-          "mark": { "type": "text", "fontSize": 12, "fontWeight": "bold", "align": "center", "dy": -6 },
-          "transform": [
-            { "aggregate": [{ "op": "sum", "field": "Mag", "as": "SumMag" }], "groupby": ["Attribute"] }
-          ],
-          "encoding": {
-            "text": { "field": "Attribute", "type": "nominal" }
-          }
-        }
-      ]
+        "tooltip": [
+          { "field": "SectorShort", "title": "Sector" },
+          { "field": "Attribute", "title": "Year" },
+          { "field": "E_Sum", "title": "Emissions (Gg CO₂-e)", "format": ",.0f" },
+          { "field": "Share", "title": "Share of year", "format": ".1%" }
+        ]
+      }
     },
 
+    { "mark": { "type": "rule", "stroke": "#efe7d1", "strokeWidth": 1.5 }, "encoding": { "y": { "datum": 0 } } },
+
     {
-      "width": 280,
-      "height": 420,
+      "transform": [{ "filter": "datum.SectorShort == 'Total (net emissions)'" }],
+      "mark": { "type": "line", "point": { "filled": true, "size": 60 }, "strokeWidth": 2.5 },
+      "encoding": {
+        "x": { "field": "Attribute", "type": "ordinal", "sort": ["2017-18","2018-19","2019-20","2020-21","2021-22","2022-23"] },
+        "y": { "field": "E_Gg", "type": "quantitative", "axis": { "format": "," } },
+        "color": { "value": "#0f172a" },
+        "tooltip": [
+          { "field": "Attribute", "title": "Year" },
+          { "field": "E_Gg", "title": "Net emissions (Gg CO₂-e)", "format": ",.0f" }
+        ]
+      }
+    },
+
+   
+    {
       "transform": [
-        { "filter": "datum.Attribute == year_sel" },
-        { "filter": "datum['IPCC emissions source and sink categories'] == 'Total (net emissions)'" }
+        { "filter": "datum.SectorShort == 'Total (net emissions)'" },
+        { "window": [{ "op": "rank", "as": "r_desc" }], "sort": [{ "field": "E_Gg", "order": "descending" }] },
+        { "filter": "datum.r_desc == 1" }
       ],
-      "layer": [
-        {
-          "mark": {
-            "type": "rect",
-            "cornerRadius": 14,
-            "stroke": "#e6dfcf",
-            "fill": "#fff",
-            "strokeWidth": 1
-          },
-          "encoding": {
-            "x": { "value": 0 },
-            "y": { "value": 0 },
-            "x2": { "value": 280 },
-            "y2": { "value": 420 }
-          }
-        },
-        {
-          "mark": { "type": "text", "align": "center", "dx": 140, "dy": 120, "fontSize": 14, "fill": "#475569" },
-          "encoding": { "text": { "value": "Net emissions" } }
-        },
-        {
-          "mark": { "type": "text", "align": "center", "dx": 140, "dy": 170, "fontSize": 26, "fontWeight": "bold", "fill": "#0f172a" },
-          "encoding": { "text": { "field": "Value", "type": "quantitative", "format": ",.0f" } }
-        },
-        {
-          "mark": { "type": "text", "align": "center", "dx": 140, "dy": 200, "fontSize": 12, "fill": "#64748b" },
-          "encoding": { "text": { "value": "Gg CO₂-e" } }
-        },
-        {
-          "mark": { "type": "text", "align": "center", "dx": 140, "dy": 245, "fontSize": 12, "fill": "#64748b" },
-          "encoding": { "text": { "field": "Attribute", "title": "Year" } }
-        },
-        {
-          "mark": { "type": "rule", "stroke": "#e5e7eb", "strokeWidth": 1 },
-          "encoding": {
-            "x": { "value": 40 },
-            "x2": { "value": 240 },
-            "y": { "value": 270 }
-          }
-        },
-        {
-          "mark": { "type": "text", "align": "left", "dx": 40, "dy": 305, "fontSize": 12, "fill": "#475569" },
-          "encoding": { "text": { "value": "Note:" } }
-        },
-        {
-          "mark": { "type": "text", "align": "left", "dx": 40, "dy": 325, "fontSize": 12, "fill": "#475569" },
-          "encoding": { "text": { "value": "Donut slice sizes use" } }
-        },
-        {
-          "mark": { "type": "text", "align": "left", "dx": 40, "dy": 340, "fontSize": 12, "fill": "#475569" },
-          "encoding": { "text": { "value": "absolute values; LULUCF" } }
-        },
-        {
-          "mark": { "type": "text", "align": "left", "dx": 40, "dy": 355, "fontSize": 12, "fill": "#475569" },
-          "encoding": { "text": { "value": "is a sink (negative)." } }
-        }
-      ]
+      "mark": {
+        "type": "text",
+        "dy": -10,
+        "fontWeight": "700",
+        "fontSize": 11,
+        "background": "white",
+        "baseline": "bottom"
+      },
+      "encoding": {
+        "x": { "field": "Attribute" },
+        "y": { "field": "E_Gg" },
+        "text": { "field": "E_Gg", "format": ",.0f" },
+        "color": { "value": "#0f172a" }
+      }
+    },
+
+    
+    {
+      "transform": [
+        { "filter": "datum.SectorShort == 'Total (net emissions)'" },
+        { "window": [{ "op": "rank", "as": "r_asc" }], "sort": [{ "field": "E_Gg", "order": "ascending" }] },
+        { "filter": "datum.r_asc == 1" }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": 14,
+        "fontWeight": "700",
+        "fontSize": 11,
+        "background": "white",
+        "baseline": "top"
+      },
+      "encoding": {
+        "x": { "field": "Attribute" },
+        "y": { "field": "E_Gg" },
+        "text": { "field": "E_Gg", "format": ",.0f" },
+        "color": { "value": "#0f172a" }
+      }
+    },
+
+    
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "x": 640,
+        "y": 360
+      },
+      "encoding": {
+        "text": { "value": "Note: Signed values; LULUCF can be negative" },
+        "color": { "value": "#475569" }
+      }
     }
   ],
 
   "config": {
     "background": "#f5f0e6",
-    "view": { "stroke": null, "fill": "white" },
+    "view": { "stroke": null, "fill": "#ffffff" },
     "axis": {
       "grid": true,
-      "gridColor": "#dbe4f0",
-      "tickColor": "#c7d4e6",
+      "gridColor": "#efe7d1",
+      "tickColor": "#e5decf",
       "labelColor": "#0f172a",
       "titleColor": "#0f172a"
     },
-    "legend": {
-      "labelColor": "#0f172a",
-      "titleColor": "#0f172a",
-      "symbolType": "circle"
-    },
+    "legend": { "labelColor": "#0f172a", "titleColor": "#0f172a", "symbolType": "circle" },
     "title": { "color": "#0f172a", "fontWeight": 700 },
     "numberFormat": ","
   }
