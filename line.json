@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "GHG Total (net) Emission by State — 2017–2022 (small multiples)",
+  "title": "GHG Total (net) Emissions by State — 2017–2022",
+
   "data": {
     "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv"
   },
@@ -9,65 +10,44 @@
     { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },
     { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
     { "filter": "datum.YearNum >= 2017 && datum.YearNum <= 2022" },
-    {
-      "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))",
-      "as": "E_Gg"
-    },
-    {
-      "filter": "datum.State != 'AUS'"   
-    }
+    { "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))", "as": "E_Gg" },
+    { "filter": "datum.State != 'AUS'" }
   ],
 
-  "facet": {
-    "field": "State",
-    "type": "nominal",
-    "sort": ["NSW","VIC","QLD","SA","WA","TAS","NT"],   
-    "header": { "labelFontWeight": 700 }
-  },
-  "columns": 3,
+  "width": 920,
+  "height": 320,
 
-  "spec": {
-    "width": 260,
-    "height": 160,
-    "layer": [
-      { "mark": { "type": "line", "point": true } },
-      {
-        "transform": [
-          { "window": [{ "op": "rank", "as": "rk" }], "sort": [{ "field": "YearNum", "order": "descending" }], "groupby": ["State"] },
-          { "filter": "datum.rk == 1" }
-        ],
-        "mark": { "type": "text", "dx": 6, "align": "left", "baseline": "middle", "fontSize": 11 },
-        "encoding": {
-          "x": { "field": "YearNum", "type": "quantitative" },
-          "y": { "field": "E_Gg", "type": "quantitative" },
-          "text": { "field": "E_Gg", "type": "quantitative", "format": "," },
-          "color": { "value": "#334155" }
-        }
-      }
-    ],
-    "encoding": {
-      "x": {
-        "field": "YearNum",
-        "type": "quantitative",
-        "axis": { "title": "Year", "format": "d", "tickMinStep": 1, "labelAngle": 0 }
-      },
-      "y": {
-        "field": "E_Gg",
-        "type": "quantitative",
-        "title": "Emissions (Gg CO₂-e)",
-        "axis": { "format": "," },
-        "scale": { "domain": [-7000, 160000], "clamp": true }
-      },
-      "color": { "value": "#334155" },
-      "tooltip": [
-        { "field": "State", "title": "State" },
-        { "field": "Year", "title": "Year (FY)" },
-        { "field": "E_Gg", "title": "Emissions (Gg CO₂-e)", "format": "," }
-      ]
-    }
-  },
+  "mark": { "type": "line", "point": true, "strokeWidth": 2 },
 
-  "resolve": { "scale": { "y": "shared" } },
+  "encoding": {
+    "x": {
+      "field": "YearNum",
+      "type": "quantitative",
+      "axis": { "title": "Year", "format": "d", "tickMinStep": 1, "labelAngle": 0 }
+    },
+    "y": {
+      "field": "E_Gg",
+      "type": "quantitative",
+      "title": "Emissions (Gg CO₂-e)",
+      "axis": { "format": "," },
+      "scale": { "domain": [-7000, 160000], "clamp": true }
+    },
+    "color": {
+      "field": "State",
+      "type": "nominal",
+      "sort": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"],
+      "scale": {
+        "domain": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"],
+        "range": ["#4e79a7","#e15759","#f28e2b","#76b7b2","#59a14f","#9c755f","#edc948","#b07aa1"]
+      },
+      "legend": { "orient": "right", "title": "State" }
+    },
+    "tooltip": [
+      { "field": "State", "title": "State" },
+      { "field": "Year", "title": "Year (FY)" },
+      { "field": "E_Gg", "title": "Emissions (Gg CO₂-e)", "format": "," }
+    ]
+  },
 
   "config": {
     "background": "#f5f0e6",
