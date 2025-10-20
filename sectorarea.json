@@ -28,7 +28,7 @@
     }
   ],
 
-  "width": 800,
+  "width": 600,
   "height": 320,
   "mark": { "type": "area", "clip": true },
 
