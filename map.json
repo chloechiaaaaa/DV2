@@ -16,22 +16,29 @@
   "layer": [
     {
       "data": { "graticule": { "step": [10, 10] } },
-      "mark": { "type": "geoshape", "stroke": "#c9d7ea", "strokeWidth": 0.6, "filled": false, "clip": true }
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#c9d7ea",
+        "strokeWidth": 0.6,
+        "filled": false,
+        "clip": true
+      }
     },
 
     {
-      "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv", "format": { "type": "csv" } },
+      "data": {
+        "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_State.csv",
+        "format": { "type": "csv" }
+      },
       "transform": [
         { "calculate": "toNumber(substring(datum.Year,0,4))", "as": "YearNum" },
         { "filter": "indexof(datum.Category, 'Total (net emissions)') >= 0" },
         { "filter": "datum.YearNum == year_sel" },
-
         { "calculate": "datum.State", "as": "state_abbr" },
         {
           "calculate": "datum.state_abbr === 'NSW' ? 'New South Wales' : datum.state_abbr === 'VIC' ? 'Victoria' : datum.state_abbr === 'QLD' ? 'Queensland' : datum.state_abbr === 'SA' ? 'South Australia' : datum.state_abbr === 'WA' ? 'Western Australia' : datum.state_abbr === 'TAS' ? 'Tasmania' : datum.state_abbr === 'NT' ? 'Northern Territory' : datum.state_abbr === 'ACT' ? 'Australian Capital Territory' : null",
           "as": "state_full"
         },
-
         {
           "lookup": "state_full",
           "from": {
@@ -43,24 +50,28 @@
             "fields": ["geometry"]
           }
         },
-
-        { "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))", "as": "E_Gg" }
+        {
+          "calculate": "toNumber(replace(datum['Emissions (Gg CO₂-e)'] + '', ',', ''))",
+          "as": "E_Gg"
+        }
       ],
+
       "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 1 },
+
       "encoding": {
         "shape": { "field": "geometry", "type": "geojson" },
         "color": {
-        "field": "E_Gg",
-        "type": "quantitative", 
-        "title": "t CO₂-e (Gg)",
-        "scale": {
-          "domain": [-5000, 130000],     
-          "range": ["#fde0dd", "#fca6a6", "#fb6a6a", "#d42020", "#7f0000"],
-          "clamp": true
+          "field": "E_Gg",
+          "type": "quantitative",
+          "title": "Emissions (Gg CO₂-e)",
+          "scale": {
+            "scheme": "blueorange",
+            "domain": [-5000, 130000],
+            "domainMid": 0,
+            "clamp": true
+          },
+          "legend": { "format": ",.0f" }
         },
-        "legend": {"format": ",.0f"}
-      },
-
         "tooltip": [
           { "field": "state_full", "title": "State" },
           { "field": "Year", "title": "Year" },
@@ -71,8 +82,8 @@
   ],
 
   "config": {
-    "background": "#f5f0e6",
-    "view": { "stroke": null, "fill": "white" },
+    "background": "#ffffff",       
+    "view": { "stroke": null, "fill": "#ffffff" },  
     "axis": {
       "grid": true,
       "gridColor": "#dbe4f0",
@@ -92,6 +103,8 @@
       "font": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
       "fontWeight": 700
     },
-    "numberFormat": ","
+    "numberFormat": ",",
+    "mark": { "invalid": null, "tooltip": true },
+    "geoshape": { "nullColor": "#e5e7eb" }
   }
 }

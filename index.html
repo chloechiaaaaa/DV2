@@ -62,12 +62,27 @@
       margin: 4px auto 8px;
     }
 
-    /* Alternating layouts */
-    .alt{display:grid; grid-template-columns:1.3fr 1fr; gap:var(--gap)}
-    .alt.r{grid-template-columns:1fr 1.3fr}
+    /* Alternating layouts (2 columns) */
+    .alt{
+      display: grid;
+      grid-template-columns: 320px 1fr;   /* fixed text + flexible viz */
+      gap: var(--gap);
+      align-items: center;
+    }
+    .alt.r{
+      grid-template-columns: 1fr 320px;
+    }
+
+    .map-copy { color: var(--sub); }
+    .map-viz { width: 100%; }
 
     /* Ensure embeds scale well */
-    #map,#smallMultiples,#sectorArea,#heatmap,#natPie,#stackedBar{max-width:100%}
+    #map,#smallMultiples,#sectorArea,#heatmap,#natPie,#stackedBar{
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      min-height: 520px;
+    }
 
     /* Storyline block */
     .storyline {
@@ -91,8 +106,11 @@
     /* Mobile */
     @media (max-width: 980px){
       .pure-g > [class^="pure-u"]{width:100%}
-      .alt,.alt.r{grid-template-columns:1fr}
+      .alt, .alt.r{ grid-template-columns: 1fr; }   /* stack columns */
       .kpis{grid-template-columns:1fr 1fr}
+      #map,#smallMultiples,#sectorArea,#heatmap,#natPie,#stackedBar{
+        min-height: 420px;
+      }
     }
   </style>
 </head>
@@ -108,7 +126,6 @@
             <div class="kicker">Australia • Greenhouse Gas Emissions • 2017–2022</div>
             <h1>Tracing Australia’s Greenhouse Gas Story</h1>
 
-            <!-- NEW lively copy -->
             <p class="lead">
               Australia’s greenhouse story is one of ambition and transformation.<br/>
               From bustling cities to vast forests, every region plays a part.<br/>
@@ -158,21 +175,33 @@
       </div>
     </section>
 
-    <!-- ROW 1: Alternating layout (text left, map right) -->
-    <section class="card alt">
-      <div>
-        <div class="subhead">Where are emissions concentrated?</div>
-        <p class="blurb">
-          The map shows total emissions by state.<br/>
-          Darker shades mean higher emissions.<br/>
-          QLD and NSW dominate the map.<br/>
-          TAS appears carbon-negative across years.<br/>
-          Slide years to watch patterns shift.<br/>
-          Note the 2020 dip during COVID.
-        </p>
-      </div>
-      <div id="map" role="img" aria-label="Choropleth map by year"></div>
-    </section>
+   <!-- ROW 1: Centered storyline on top, map below -->
+<section class="card" id="mapSection" style="text-align:center;">
+  <div class="subhead" style="text-align:center;">Where are emissions concentrated?</div>
+
+  <!-- Storyline (10 words per line, no red border) -->
+  <section class="storyline" aria-labelledby="map-storyline-title"
+           style="max-width:760px; margin:0 auto 16px auto; text-align:center; border-left:none; box-shadow:0 1px 2px rgba(16,24,40,0.04); border-radius:12px;">
+    <p style="line-height:1.7;">
+      The map shows total emissions by state across Australia today.<br/>
+      Darker shades indicate higher emissions and lighter shades indicate improvements.<br/>
+      Queensland and New South Wales dominate national totals most years.<br/>
+      Tasmania often appears carbon negative due to land use offsets.<br/>
+      Use the year slider to watch patterns shift over time.<br/>
+      Note the pronounced 2020 dip during COVID and partial rebounds.<br/>
+      Western Australia and Queensland remain high compared with smaller jurisdictions.<br/>
+      ACT stays comparatively low, driven by cleaner electricity and offsets.<br/>
+      Hover for values and explore differences between states and years.<br/>
+      This choropleth summarises net emissions measured in Gg CO₂-e annually.
+    </p>
+  </section>
+
+  <!-- Map -->
+  <div id="map" role="img" aria-label="Choropleth map by year"
+       style="display:block; margin:0 auto; max-width:900px;"></div>
+</section>
+
+
 
     <!-- ROW 1B: Three equal columns (small multiples + two quick notes) -->
     <section class="pure-g grid-gap" style="margin-top:var(--gap)">
