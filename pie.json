@@ -48,70 +48,62 @@
     },
     {
       "transform": [
-        { "aggregate": [ { "op": "argmin", "field": "E_Gg", "as": "min" } ] },
-        { "flatten": ["min.YearNum", "min.E_Gg", "min.Attribute"], "as": ["x", "y", "attr"] }
+        { "window": [{ "op": "row_number", "as": "rn" }], "sort": [{ "field": "E_Gg", "order": "ascending" }] },
+        { "filter": "datum.rn == 1" }
       ],
       "layer": [
         {
-          "mark": { "type": "point", "filled": true, "size": 120, "color": "#0ea5e9", "stroke": "#0f172a", "strokeWidth": 1 },
+          "mark": { "type": "point", "filled": true, "size": 140, "color": "#0ea5e9", "stroke": "#0f172a", "strokeWidth": 1 },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
-            "tooltip": [
-              { "field": "attr", "title": "Year" },
-              { "field": "y", "title": "Lowest emissions (Gg CO₂-e)", "format": ",.0f" }
-            ]
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" }
           }
         },
         {
           "mark": { "type": "text", "align": "left", "dx": 8, "dy": -8, "fontWeight": "bold", "color": "#0ea5e9" },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" },
             "text": { "value": "Lowest" }
           }
         },
         {
           "mark": { "type": "text", "align": "left", "dx": 8, "dy": 8, "color": "#475569" },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
-            "text": { "field": "y", "type": "quantitative", "format": ",.0f" }
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" },
+            "text": { "field": "E_Gg", "type": "quantitative", "format": ",.0f" }
           }
         }
       ]
     },
     {
       "transform": [
-        { "aggregate": [ { "op": "argmax", "field": "E_Gg", "as": "max" } ] },
-        { "flatten": ["max.YearNum", "max.E_Gg", "max.Attribute"], "as": ["x", "y", "attr"] }
+        { "window": [{ "op": "row_number", "as": "rn" }], "sort": [{ "field": "E_Gg", "order": "descending" }] },
+        { "filter": "datum.rn == 1" }
       ],
       "layer": [
         {
-          "mark": { "type": "point", "filled": true, "size": 120, "color": "#ef4444", "stroke": "#0f172a", "strokeWidth": 1 },
+          "mark": { "type": "point", "filled": true, "size": 140, "color": "#ef4444", "stroke": "#0f172a", "strokeWidth": 1 },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
-            "tooltip": [
-              { "field": "attr", "title": "Year" },
-              { "field": "y", "title": "Highest emissions (Gg CO₂-e)", "format": ",.0f" }
-            ]
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" }
           }
         },
         {
           "mark": { "type": "text", "align": "left", "dx": 8, "dy": -8, "fontWeight": "bold", "color": "#ef4444" },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" },
             "text": { "value": "Highest" }
           }
         },
         {
           "mark": { "type": "text", "align": "left", "dx": 8, "dy": 8, "color": "#475569" },
           "encoding": {
-            "x": { "field": "x", "type": "quantitative" },
-            "y": { "field": "y", "type": "quantitative" },
-            "text": { "field": "y", "type": "quantitative", "format": ",.0f" }
+            "x": { "field": "YearNum", "type": "quantitative" },
+            "y": { "field": "E_Gg", "type": "quantitative" },
+            "text": { "field": "E_Gg", "type": "quantitative", "format": ",.0f" }
           }
         }
       ]

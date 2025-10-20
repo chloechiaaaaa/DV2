@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Australia — Sector emissions by year (stacked, signed)",
+  "title": "Australia — Sector emissions by year (stacked, signed, 2017–2022)",
   "data": {
     "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv"
   },
@@ -15,8 +15,10 @@
       "calculate": "indexof(datum['IPCC emissions source and sink categories'], 'Land-Use Change and Forestry') >= 0 ? '4. Land Use & Forestry (LULUCF)' : datum['IPCC emissions source and sink categories']",
       "as": "SectorShort"
     },
-    { "aggregate": [{ "op": "sum", "field": "E_Gg", "as": "E_Sum" }], "groupby": ["Attribute", "SectorShort"] },
-    { "joinaggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["Attribute"] },
+    { "calculate": "toNumber(substring(datum.Attribute,0,4))", "as": "YearLabel" },
+    { "filter": "datum.YearLabel >= 2017 && datum.YearLabel <= 2022" },
+    { "aggregate": [{ "op": "sum", "field": "E_Gg", "as": "E_Sum" }], "groupby": ["YearLabel", "SectorShort"] },
+    { "joinaggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["YearLabel"] },
     { "calculate": "datum.E_Sum / datum.YearTotal", "as": "Share" }
   ],
 
@@ -26,10 +28,10 @@
       "mark": { "type": "bar", "cornerRadiusEnd": 2 },
       "encoding": {
         "x": {
-          "field": "Attribute",
+          "field": "YearLabel",
           "type": "ordinal",
-          "title": null,
-          "sort": ["2017-18","2018-19","2019-20","2020-21","2021-22","2022-23"],
+          "title": "Year",
+          "sort": [2017, 2018, 2019, 2020, 2021, 2022],
           "axis": { "labelAngle": 0 }
         },
         "y": {
@@ -51,13 +53,13 @@
               "4. Land Use & Forestry (LULUCF)",
               "5.  Waste"
             ],
-            "range": ["#e15759","#4e79a7","#59a14f","#9c755f","#f28e2b"]
+            "range": ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"]
           },
           "legend": { "orient": "right" }
         },
         "tooltip": [
           { "field": "SectorShort", "title": "Sector" },
-          { "field": "Attribute", "title": "Year" },
+          { "field": "YearLabel", "title": "Year" },
           { "field": "E_Sum", "title": "Emissions (Gg CO₂-e)", "format": ",.0f" },
           { "field": "Share", "title": "Share of year", "format": ".1%" }
         ]

@@ -38,7 +38,7 @@
       "type": "quantitative",
       "title": "Emission Intensity (t CO₂-e per capita)",
       "legend": { "titleLimit": 0 },
-      "scale": { "scheme": "blueorange" }
+      "scale": { "scheme": {"name": "cividis", "count": 9} }
     },
     "tooltip": [
       { "field": "Attribute", "title": "State" },
@@ -49,7 +49,8 @@
 
   "config": {
     "view": { "stroke": "transparent" },
-    "axis": { "grid": false },
+    "axis": { "grid": false, "labelColor": "#0f172a", "titleColor": "#0f172a" },
+    "legend": { "labelColor": "#0f172a", "titleColor": "#0f172a" },
     "background": "#FFF8E7"
   },
   "width": 550,

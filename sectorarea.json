@@ -46,7 +46,7 @@
           "type": "quantitative",
           "axis": { "title": "Emissions (Gg CO₂-e)" },
           "stack": "zero",
-          "scale": { "domain": [-20000, 30000] }    
+          "scale": { "domain": [-20000, 30000] }
         },
         "color": {
           "field": "CatLabel",
@@ -60,7 +60,7 @@
               "4. Land Use, Land-Use Change and Forestry",
               "5. Waste"
             ],
-            "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
+            "range": ["#D55E00", "#0072B2", "#F0E442", "#009E73", "#CC79A7"]
           }
         },
         "order": { "field": "CatOrderNum", "type": "quantitative" }
@@ -83,7 +83,7 @@
           "type": "quantitative",
           "axis": { "title": "Emissions (Gg CO₂-e)" },
           "stack": "zero",
-          "scale": { "domain": [-20000, 120000] }    
+          "scale": { "domain": [-20000, 120000] }
         },
         "color": {
           "field": "CatLabel",
@@ -97,7 +97,7 @@
               "4. Land Use, Land-Use Change and Forestry",
               "5. Waste"
             ],
-            "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
+            "range": ["#D55E00", "#0072B2", "#F0E442", "#009E73", "#CC79A7"]
           }
         },
         "order": { "field": "CatOrderNum", "type": "quantitative" },
