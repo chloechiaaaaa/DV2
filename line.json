@@ -21,8 +21,8 @@
     },
     { "filter": "datum.State != 'AUS'" }
   ],
-  "width": 920,
-  "height": 320,
+  "width": 600,
+  "height": 360,
   "layer": [
     {
       "mark": { "type": "line", "point": true, "strokeWidth": 2 },
@@ -43,25 +43,13 @@
           "field": "StateFull",
           "type": "nominal",
           "sort": [
-            "New South Wales",
-            "Victoria",
-            "Queensland",
-            "South Australia",
-            "Western Australia",
-            "Tasmania",
-            "Northern Territory",
-            "Australian Capital Territory"
+            "New South Wales","Victoria","Queensland","South Australia",
+            "Western Australia","Tasmania","Northern Territory","Australian Capital Territory"
           ],
           "scale": {
             "domain": [
-              "New South Wales",
-              "Victoria",
-              "Queensland",
-              "South Australia",
-              "Western Australia",
-              "Tasmania",
-              "Northern Territory",
-              "Australian Capital Territory"
+              "New South Wales","Victoria","Queensland","South Australia",
+              "Western Australia","Tasmania","Northern Territory","Australian Capital Territory"
             ],
             "range": ["#4e79a7","#e15759","#f28e2b","#76b7b2","#59a14f","#9c755f","#edc948","#b07aa1"]
           },
@@ -77,6 +65,21 @@
     {
       "mark": { "type": "rule", "strokeDash": [6,4], "color": "red" },
       "encoding": { "x": { "datum": 2020 } }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "text": "Emission drop",
+        "angle": 0,
+        "fontWeight": "bold",
+        "color": "red",
+        "dx": 40,
+        "dy": 20
+      },
+      "encoding": {
+        "x": { "datum": 2020 },
+        "y": { "datum": 175000 }
+      }
     }
   ],
   "config": {

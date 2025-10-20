@@ -203,48 +203,33 @@
 
 
 
-    <!-- ROW 1B: Three equal columns (small multiples + two quick notes) -->
-    <section class="pure-g grid-gap" style="margin-top:var(--gap)">
-      <div class="pure-u-1 pure-u-md-2-3">
-        <div class="card">
-          <div class="subhead">How are the states changing?</div>
-          <p class="blurb">
-            Each small panel shows a state’s trend.<br/>
-            Most decline gradually over time.<br/>
-            Around <b>2020</b>, emissions drop sharply.<br/>
-            Partial rebounds follow as industries restart.
-          </p>
-          <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
+   <!-- ROW 1B: Two columns — Left = graph, Right = text + storyline -->
+<section class="card alt r" style="margin-top:var(--gap)">
+  <!-- LEFT: Chart -->
+  <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
 
-          <!-- Storyline below the chart -->
-          <section class="storyline" aria-labelledby="storyline-title">
-            <h3 id="storyline-title">Storyline</h3>
-            <p><strong>2020 — emission drop:</strong> Australia’s totals dipped as COVID-19 lockdowns reduced transport and electricity demand.</p>
-            <p><strong>Do you know that…</strong> <em>Tasmania</em> and the <em>ACT</em> were exceptions — their net emissions <u>increased slightly</u> in 2019–20.</p>
-            <ul>
-              <li><strong>TAS:</strong> Near/below-zero baseline; land use & forestry accounting swings can lift totals.</li>
-              <li><strong>ACT:</strong> Electricity largely renewable/offset; small transport & waste changes are magnified.</li>
-            </ul>
-            <p class="note" style="margin-top:6px">Note: Years are financial years (e.g., “2020” ≈ 2019–20).</p>
-          </section>
-        </div>
-      </div>
-      <div class="pure-u-1 pure-u-md-1-3">
-        <div class="card">
-          <div class="subhead">Quick notes</div>
-          <p class="blurb">
-            • Larger states drive totals more.<br/>
-            • Electricity mix changes matter most.<br/>
-            • Land use offsets can dominate.
-          </p>
-          <p class="blurb">
-            • Watch TAS for negative totals.<br/>
-            • WA and QLD remain high.<br/>
-            • ACT trends stay comparatively low.
-          </p>
-        </div>
-      </div>
+  <!-- RIGHT: Text + Storyline -->
+  <aside style="max-width:340px">
+    <div class="subhead">How are the states changing?</div>
+    <p class="blurb" style="margin-top:0">
+      Each small panel shows a state’s trend.<br/>
+      Most decline gradually over time.<br/>
+      Around <b>2020</b>, emissions drop sharply.<br/>
+      Partial rebounds follow as industries restart.
+    </p>
+
+    <section class="storyline" aria-labelledby="storyline-title">
+      <p><strong>2020 — emission drop:</strong> Australia’s totals dipped as COVID-19 lockdowns reduced transport and electricity demand.</p>
+      <p><strong>Do you know that…</strong> <em>Tasmania</em> and the <em>ACT</em> were exceptions — their net emissions <u>increased slightly</u> in 2019–20.</p>
+      <ul>
+        <li><strong>TAS:</strong> Near/below-zero baseline; land use & forestry accounting swings can lift totals.</li>
+        <li><strong>ACT:</strong> Electricity largely renewable/offset; small transport & waste changes are magnified.</li>
+      </ul>
+      <p class="note" style="margin-top:6px">Note: Years are financial years (e.g., “2020” ≈ 2019–20).</p>
     </section>
+  </aside>
+</section>
+
 
     <!-- ROW 2: Full-width sector area -->
     <section class="card" style="margin-top:var(--gap)">
