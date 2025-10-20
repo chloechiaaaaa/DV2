@@ -15,7 +15,7 @@
     :root{
       --gap: 20px; --card: #fff; --page: #FFF8E7;
       --ink:#0f172a; --sub:#475569; --grid:#efe7d1;
-      --muted:#64748b; --accent:#0ea5e9;
+      --muted:#64748b; --accent:#0ea5e9; --accent2:#22c55e;
     }
     html,body{height:100%}
     body{
@@ -23,137 +23,262 @@
       font: 15px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     }
     .wrap{max-width:1200px; margin:0 auto; padding:28px 16px 80px}
+    .card{
+      background:var(--card); border-radius:16px; padding:16px;
+      box-shadow:0 8px 24px rgba(15,23,42,.08); border:1px solid rgba(15,23,42,.06)
+    }
+
+    /* HERO (two columns) */
     .hero{
       background: linear-gradient(180deg,#ffffff 0%, #fff7e6 100%);
-      border-radius:18px; padding:22px 18px; box-shadow:0 8px 24px rgba(15,23,42,.08);
+      border-radius:18px; padding:22px; box-shadow:0 8px 24px rgba(15,23,42,.08);
       margin-bottom:18px; border:1px solid rgba(15,23,42,.06);
     }
     h1{font-size:30px; letter-spacing:.2px; margin:0 0 6px}
     .kicker{font-size:12px; text-transform:uppercase; color:var(--muted); letter-spacing:.12em}
     .lead{color:var(--sub); margin:6px 0 0; line-height:1.6;}
+    .byline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px}
+    .kpis{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .kpi{background:#fff; border:1px solid rgba(15,23,42,.06); border-radius:12px; padding:12px; text-align:center}
+    .kpi b{display:block; font-size:18px}
+    .chip{display:inline-block; padding:4px 8px; border-radius:999px; font-size:12px; border:1px solid rgba(15,23,42,.12); background:#fff}
+
     .grid-gap{gap: var(--gap)}
-    .card{
-      background:var(--card); border-radius:16px; padding:16px;
-      box-shadow:0 8px 24px rgba(15,23,42,.08); border:1px solid rgba(15,23,42,.06)
-    }
     .subhead{font-weight:800; color:var(--sub); margin:0 0 8px 0}
     .blurb{color:var(--sub); margin:6px 0 12px}
     .note{font-size:12px; color:var(--muted)}
     hr{border:0; height:1px; background:rgba(15,23,42,.08); margin:16px 0}
-    footer{margin-top:28px; font-size:12px; color:var(--muted)}
-    .byline{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+    /* Center hero text */
+    .hero .intro {
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero .byline {
+      justify-content: center;
+    }
+    .hero h1 {
+      margin: 4px auto 8px;
+    }
+
+    /* Alternating layouts */
+    .alt{display:grid; grid-template-columns:1.3fr 1fr; gap:var(--gap)}
+    .alt.r{grid-template-columns:1fr 1.3fr}
+
     /* Ensure embeds scale well */
     #map,#smallMultiples,#sectorArea,#heatmap,#natPie,#stackedBar{max-width:100%}
-    /* Mobile stacking */
+
+    /* Storyline block */
+    .storyline {
+      margin-top: 10px;
+      padding: 14px 16px;
+      background: var(--card);
+      color: var(--ink);
+      border-left: 4px dotted #ef4444;
+      box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+      border-radius: 12px;
+    }
+    .storyline h3 {
+      margin: 0 0 6px 0;
+      font-size: 15px;
+      color: var(--sub);
+      letter-spacing: 0.2px;
+    }
+    .storyline p { margin: 6px 0; }
+    .storyline ul { margin: 6px 0 0 1.1em; }
+
+    /* Mobile */
     @media (max-width: 980px){
       .pure-g > [class^="pure-u"]{width:100%}
+      .alt,.alt.r{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <!-- HERO / STORY HOOK -->
+
+    <!-- HERO: two columns (text + KPIs/legend chips) -->
     <section class="hero card">
-      <div class="kicker">Australia • Greenhouse Gas Emissions • 2017–2022</div>
-      <h1>Tracing Australia’s Greenhouse Gas Story</h1>
-      <p class="lead">
-        Australia’s greenhouse gas story isn’t flat — it’s a map of energy, land, and people constantly shifting. 
-        This dashboard unpacks the journey from <b>2017 to 2022</b> — six years that saw steady progress, a global pandemic, and new ambitions for net zero.
-      </p>
-      <p class="lead">
-        <b>Queensland</b> and <b>New South Wales</b> glow darkest across the years, carrying much of the emissions weight, 
-        while <b>Tasmania</b> stays pale — its forests act like lungs, pulling carbon back in. 
-        Scroll down and explore how each state tells its own story — where emissions happen, how they’ve changed, and what drives the rise or fall.
-      </p>
-      <div class="byline">
-        <span class="note">Author: Chloe Destiny Chia Pei Ni • Last updated: 20 Oct 2025</span>
-        <span class="note">Unit: FIT3179 — Data Visualisation 2</span>
+      <div class="pure-g grid-gap">
+        <div class="pure-u-1 pure-u-md-2-3">
+          <div class="intro">
+            <div class="kicker">Australia • Greenhouse Gas Emissions • 2017–2022</div>
+            <h1>Tracing Australia’s Greenhouse Gas Story</h1>
+
+            <!-- NEW lively copy -->
+            <p class="lead">
+              Australia’s greenhouse story is one of ambition and transformation.<br/>
+              From bustling cities to vast forests, every region plays a part.<br/>
+              Between 2017 and 2022, emissions rose, fell, and reset priorities.<br/>
+              COVID lockdowns caused a dramatic dip — a pause in impact.<br/>
+              Recovery brought new challenges and a sharper focus on net zero.
+            </p>
+            <p class="lead">
+              <b>Queensland</b> and <b>New South Wales</b> dominate national emissions overall,<br/>
+              while <b>Tasmania</b> stands out — quietly absorbing more than it emits.<br/>
+              Scroll to uncover how each state’s story unfolds across years,<br/>
+              and see who’s truly steering Australia’s climate future forward.
+            </p>
+
+            <div class="byline">
+              <span class="chip">Author: Chloe Destiny Chia Pei Ni</span>
+              <span class="chip">Updated: 20 Oct 2025</span>
+              <span class="chip">FIT3179 • DV2</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pure-u-1 pure-u-md-1-3">
+          <div class="kpis">
+            <div class="kpi">
+              <span class="note">Peak dip year</span>
+              <b>2020</b>
+              <span class="note">COVID-19 effect visible</span>
+            </div>
+            <div class="kpi">
+              <span class="note">Largest sector</span>
+              <b>Energy</b>
+              <span class="note">All states combined</span>
+            </div>
+            <div class="kpi">
+              <span class="note">Natural offset</span>
+              <b>LULUCF</b>
+              <span class="note">Negative contributions</span>
+            </div>
+            <div class="kpi">
+              <span class="note">Standout state</span>
+              <b>Tasmania</b>
+              <span class="note">Often below zero</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ROW 1: Map + Small Multiples -->
-    <section class="pure-g grid-gap">
+    <!-- ROW 1: Alternating layout (text left, map right) -->
+    <section class="card alt">
+      <div>
+        <div class="subhead">Where are emissions concentrated?</div>
+        <p class="blurb">
+          The map shows total emissions by state.<br/>
+          Darker shades mean higher emissions.<br/>
+          QLD and NSW dominate the map.<br/>
+          TAS appears carbon-negative across years.<br/>
+          Slide years to watch patterns shift.<br/>
+          Note the 2020 dip during COVID.
+        </p>
+      </div>
+      <div id="map" role="img" aria-label="Choropleth map by year"></div>
+    </section>
+
+    <!-- ROW 1B: Three equal columns (small multiples + two quick notes) -->
+    <section class="pure-g grid-gap" style="margin-top:var(--gap)">
       <div class="pure-u-1 pure-u-md-2-3">
         <div class="card">
-          <div class="subhead">Where are emissions concentrated?</div>
+          <div class="subhead">How are the states changing?</div>
           <p class="blurb">
-            The choropleth map paints the big picture — darker shades mean higher total emissions. 
-            QLD and NSW dominate the map, while TAS stands out as carbon-negative. 
-            Slide through the years to see how patterns shift, with a visible dip in 2020 during the pandemic.
+            Each small panel shows a state’s trend.<br/>
+            Most decline gradually over time.<br/>
+            Around <b>2020</b>, emissions drop sharply.<br/>
+            Partial rebounds follow as industries restart.
           </p>
-          <div id="map" role="img" aria-label="Choropleth map by year"></div>
+          <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
+
+          <!-- Storyline below the chart -->
+          <section class="storyline" aria-labelledby="storyline-title">
+            <h3 id="storyline-title">Storyline</h3>
+            <p><strong>2020 — emission drop:</strong> Australia’s totals dipped as COVID-19 lockdowns reduced transport and electricity demand.</p>
+            <p><strong>Do you know that…</strong> <em>Tasmania</em> and the <em>ACT</em> were exceptions — their net emissions <u>increased slightly</u> in 2019–20.</p>
+            <ul>
+              <li><strong>TAS:</strong> Near/below-zero baseline; land use & forestry accounting swings can lift totals.</li>
+              <li><strong>ACT:</strong> Electricity largely renewable/offset; small transport & waste changes are magnified.</li>
+            </ul>
+            <p class="note" style="margin-top:6px">Note: Years are financial years (e.g., “2020” ≈ 2019–20).</p>
+          </section>
         </div>
       </div>
       <div class="pure-u-1 pure-u-md-1-3">
         <div class="card">
-          <div class="subhead">How are the states changing?</div>
+          <div class="subhead">Quick notes</div>
           <p class="blurb">
-            Each small panel tells a mini-story of its state. Most trend slightly downward, signalling gradual progress. 
-            Around <b>2020</b>, a sharp drop appears almost everywhere — the impact of COVID-19 — followed by partial rebounds as industries restarted.
+            • Larger states drive totals more.<br/>
+            • Electricity mix changes matter most.<br/>
+            • Land use offsets can dominate.
           </p>
-          <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
+          <p class="blurb">
+            • Watch TAS for negative totals.<br/>
+            • WA and QLD remain high.<br/>
+            • ACT trends stay comparatively low.
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- ROW 2: Sector (full-width) -->
-    <section class="pure-g grid-gap">
-      <div class="pure-u-1">
-        <div class="card">
-          <div class="subhead">What drives the rise or fall?</div>
-          <p class="blurb">
-            The stacked area chart breaks down each state’s total by sector. 
-            <b>Energy</b> is the biggest slice across Australia, but negative values in <b>Land-Use, Land-Use Change & Forestry (LULUCF)</b> 
-            reveal nature’s role in offsetting emissions — especially in Tasmania, where it flips the total below zero.
-          </p>
-          <div id="sectorArea" role="img" aria-label="Stacked area by sector over time"></div>
-        </div>
+    <!-- ROW 2: Full-width sector area -->
+    <section class="card" style="margin-top:var(--gap)">
+      <div class="subhead">What drives the rise or fall?</div>
+      <p class="blurb">
+        This area chart breaks totals by sector.<br/>
+        <b>Energy</b> remains the largest contributor.<br/>
+        <b>LULUCF</b> offsets emissions with negatives.<br/>
+        In Tasmania, offsets flip totals below zero.
+      </p>
+      <div id="sectorArea" role="img" aria-label="Stacked area by sector over time"></div>
+    </section>
+
+    <!-- ROW 3: Alternating layout (text right, vis left) -->
+    <section class="card alt r" style="margin-top:var(--gap)">
+      <div id="heatmap" role="img" aria-label="Per-capita emissions heatmap"></div>
+      <div>
+        <div class="subhead">Who’s the most efficient?</div>
+        <p class="blurb">
+          The heatmap shows emissions per person.<br/>
+          Dark tiles mean heavier footprints.<br/>
+          Lighter tiles show improvement.<br/>
+          Some states become more efficient over time.
+        </p>
       </div>
     </section>
 
-    <!-- ROW 3: Heatmap + National composition -->
-    <section class="pure-g grid-gap">
+    <!-- ROW 4: Two stacked cards on right column -->
+    <section class="pure-g grid-gap" style="margin-top:var(--gap)">
       <div class="pure-u-1 pure-u-md-1-2">
-        <div class="card">
-          <div class="subhead">Who’s the most efficient?</div>
-          <p class="blurb">
-            The heatmap compares emission intensity per person (t CO₂-e per capita). 
-            Darker tiles mean heavier footprints; lighter ones mark improvement. 
-            Efficiency gains are visible in some states — proof that cleaner energy and behavioural shifts are taking hold.
-          </p>
-          <div id="heatmap" role="img" aria-label="Per-capita emissions heatmap"></div>
-        </div>
-      </div>
-      <div class="pure-u-1 pure-u-md-1-2">
-        <div class="card" style="margin-bottom:var(--gap)">
+        <div class="card" style="height:100%">
           <div class="subhead">Australia’s sector mix by year</div>
           <p class="blurb">
-            The donut chart shows the share of each sector’s contribution for the selected year. 
-            Hover to reveal exact values — notice how <b>Energy</b> still dominates but <b>LULUCF</b> increasingly offsets total emissions.
+            Donut chart shows each sector’s share.<br/>
+            Hover to reveal exact values.<br/>
+            <b>Energy</b> dominates; <b>LULUCF</b> offsets more each year.
           </p>
           <div id="natPie" role="img" aria-label="National sector shares"></div>
         </div>
-        <div class="card">
+      </div>
+      <div class="pure-u-1 pure-u-md-1-2">
+        <div class="card" style="height:100%">
           <div class="subhead">How sectors evolve over time</div>
           <p class="blurb">
-            The stacked bar chart highlights how each sector’s signed contribution shifts year to year. 
-            Together, these bars reveal a story of rebalancing — slower emissions growth, stronger offsets, and ongoing energy transition.
+            Stacked bars show sector contributions yearly.<br/>
+            Compare how proportions shift through time.<br/>
+            See slower growth and stronger offsets.<br/>
+            A story of Australia’s energy transition.
           </p>
           <div id="stackedBar" role="img" aria-label="National stacked bar by sector"></div>
         </div>
       </div>
     </section>
 
-    <footer class="card">
+    <footer class="card" style="margin-top:var(--gap)">
       <b>Key insights:</b><br/>
-      • Geography shapes emissions — larger, energy-intensive states lead the charts.<br/>
-      • 2020 marked a nationwide dip, showing how behaviour and industry shutdowns affect totals.<br/>
-      • Energy and land use are the main levers — the first drives emissions, the second offsets them.<br/>
-      • Efficiency improvements are visible but uneven across states.<br/>
+      • Geography matters: big states emit more.<br/>
+      • 2020 dip shows COVID’s impact on emissions.<br/>
+      • Energy drives output; land use offsets carbon.<br/>
+      • Efficiency improves, unevenly across states.<br/>
       <hr/>
       <span class="note">Author: Chloe Destiny Chia Pei Ni • Date: 20 Oct 2025 • Unit: FIT3179</span><br/>
-      <span class="note">Sources: Department of Climate Change, Energy, the Environment and Water (DCCEEW); ABS population estimates; GitHub repository link.</span>
+      <span class="note">Sources: DCCEEW; ABS population estimates; GitHub repository link.</span>
     </footer>
   </div>
 
