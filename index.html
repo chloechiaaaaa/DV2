@@ -231,29 +231,38 @@
 </section>
 
 
-    <!-- ROW 2: Two-column — Left text, Right chart -->
+<!-- ROW 2: Two-column — Left text, Right chart -->
 <section class="card alt" style="margin-top:var(--gap); column-gap:16px;">
   <!-- LEFT: explanatory copy -->
   <aside style="max-width:300px">
     <div class="subhead">What drives the rise or fall?</div>
     <p class="blurb" style="margin-top:0">
-      This area chart breaks totals by sector.
+      This chart breaks total emissions into major sectors.
     </p>
     <ul class="blurb" style="margin:8px 0 0 18px">
-      <li><b>Energy</b> remains the largest contributor.</li>
-      <li><b>LULUCF</b> offsets emissions with negatives.</li>
-      <li>In <b>Tasmania</b>, offsets flip totals below zero.</li>
+      <li><b>Energy</b> remains the largest contributor across states.</li>
+      <li><b>LULUCF</b> (land use & forestry) offsets emissions with negatives.</li>
+      <li>In <b>Tasmania</b>, strong offsets push totals below zero.</li>
     </ul>
+
+    <!-- Explanation BELOW bullet points -->
+    <p class="note" style="margin-top:8px; line-height:1.5;">
+      <b>Why this view?</b> Areas are stacked by sector. 
+      <b>LULUCF</b> can be negative (carbon sinks), which can pull totals below zero in Tasmania. 
+      The y-axis may be fixed for fair cross-state comparison, so smaller states (e.g., ACT) can look flat.
+    </p>
   </aside>
 
   <!-- RIGHT: chart container (same id) -->
-  <div style="margin-left:-20px;">  <!-- 👈 this moves the chart slightly left -->
+  <div style="margin-left:-20px;">
     <div id="sectorArea"
          role="img"
          aria-label="Stacked area by sector over time"
          style="min-height:420px;"></div>
   </div>
 </section>
+
+
 
 
 
