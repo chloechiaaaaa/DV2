@@ -1,31 +1,27 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Australia — Sector emissions by year (stacked, signed)",
-
   "data": {
     "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv"
   },
-
   "width": 760,
   "height": 360,
 
   "transform": [
     { "filter": "datum.Scope == 'Australia'" },
-    { "calculate": "replace(datum['IPCC emissions source and sink categories'], '  ', ' ')", "as": "CatLabel" },
+    { "filter": "datum['IPCC emissions source and sink categories'] != 'Total (net emissions)'" },
     { "calculate": "toNumber(datum.Value)", "as": "E_Gg" },
     {
-      "calculate": "datum.CatLabel == '4. Land Use, Land-Use Change and Forestry' ? '4. Land Use & Forestry (LULUCF)' : datum.CatLabel",
+      "calculate": "indexof(datum['IPCC emissions source and sink categories'], 'Land-Use Change and Forestry') >= 0 ? '4. Land Use & Forestry (LULUCF)' : datum['IPCC emissions source and sink categories']",
       "as": "SectorShort"
     },
-    { "filter": "datum.SectorShort != 'Total (net emissions)'" },
     { "aggregate": [{ "op": "sum", "field": "E_Gg", "as": "E_Sum" }], "groupby": ["Attribute", "SectorShort"] },
     { "joinaggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["Attribute"] },
-    { "calculate": "E_Sum / YearTotal", "as": "Share" }
+    { "calculate": "datum.E_Sum / datum.YearTotal", "as": "Share" }
   ],
 
   "layer": [
     { "mark": { "type": "rule", "stroke": "#efe7d1", "strokeWidth": 1.5 }, "encoding": { "y": { "datum": 0 } } },
-
     {
       "mark": { "type": "bar", "cornerRadiusEnd": 2 },
       "encoding": {
@@ -33,7 +29,7 @@
           "field": "Attribute",
           "type": "ordinal",
           "title": null,
-          "sort": ["2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23"],
+          "sort": ["2017-18","2018-19","2019-20","2020-21","2021-22","2022-23"],
           "axis": { "labelAngle": 0 }
         },
         "y": {
@@ -50,12 +46,12 @@
           "scale": {
             "domain": [
               "1. Energy",
-              "2. Industrial Processes",
-              "3. Agriculture",
+              "2.  Industrial Processes",
+              "3.  Agriculture",
               "4. Land Use & Forestry (LULUCF)",
-              "5. Waste"
+              "5.  Waste"
             ],
-            "range": ["#e15759", "#4e79a7", "#59a14f", "#9c755f", "#f28e2b"]
+            "range": ["#e15759","#4e79a7","#59a14f","#9c755f","#f28e2b"]
           },
           "legend": { "orient": "right" }
         },
