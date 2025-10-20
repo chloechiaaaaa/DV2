@@ -203,10 +203,17 @@
 
 
 
-   <!-- ROW 1B: Two columns — Left = graph, Right = text + storyline -->
+  <!-- ROW 1B: Two columns — Left = graph, Right = text + storyline -->
 <section class="card alt r" style="margin-top:var(--gap)">
   <!-- LEFT: Chart -->
-  <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
+  <div>
+    <div id="smallMultiples" role="img" aria-label="Small multiple lines"></div>
+
+    <!-- Note moved BELOW the graph -->
+    <p class="note" style="margin-top:-70px; text-align:left;">
+  Note: Years are financial years (e.g., “2020” ≈ 2019–20).
+    </p>
+  </div>
 
   <!-- RIGHT: Text + Storyline -->
   <aside style="max-width:340px">
@@ -225,7 +232,6 @@
         <li><strong>TAS:</strong> Near/below-zero baseline; land use & forestry accounting swings can lift totals.</li>
         <li><strong>ACT:</strong> Electricity largely renewable/offset; small transport & waste changes are magnified.</li>
       </ul>
-      <p class="note" style="margin-top:6px">Note: Years are financial years (e.g., “2020” ≈ 2019–20).</p>
     </section>
   </aside>
 </section>
@@ -265,47 +271,79 @@
 
 
 
+<!-- ROW 3: Two-column — Left graph, Right text -->
+<section class="card alt r" style="margin-top:var(--gap); column-gap:16px;">
+  <!-- LEFT: heatmap chart -->
+  <div>
+    <div id="heatmap"
+         role="img"
+         aria-label="Per-capita emissions heatmap"
+         style="min-height:420px;"></div>
+  </div>
 
-    <!-- ROW 3: Alternating layout (text right, vis left) -->
-    <section class="card alt r" style="margin-top:var(--gap)">
-      <div id="heatmap" role="img" aria-label="Per-capita emissions heatmap"></div>
-      <div>
-        <div class="subhead">Who’s the most efficient?</div>
-        <p class="blurb">
-          The heatmap shows emissions per person.<br/>
-          Dark tiles mean heavier footprints.<br/>
-          Lighter tiles show improvement.<br/>
-          Some states become more efficient over time.
-        </p>
-      </div>
-    </section>
+  <!-- RIGHT: explanatory copy -->
+  <aside style="max-width:320px; text-align:justify;">
+    <div class="subhead">Who’s the Most Efficient?</div>
+    <p class="blurb" style="margin-top:0;">
+      Each tile captures how much carbon each person is responsible for — 
+      a snapshot of efficiency, not size.  
+      Darker shades signal heavier footprints; lighter ones, a shift toward cleaner living.
+    </p>
+    <p style="margin-top:8px; line-height:1.5;">
+      <b>Notice the trend:</b> states like <b>Victoria</b> and <b>New South Wales</b> gradually lighten, 
+      reflecting cleaner grids and lifestyle changes.  
+      <b>Queensland</b> and <b>Western Australia</b> stay darker — energy-intensive industries and 
+      mining keep their per-capita emissions high.
+    </p>
+    <p class="note" style="margin-top:8px; line-height:1.5;">
+      <b>Why this view?</b> Looking at emissions per person reveals who’s leading in efficiency.  
+      Smaller regions such as the <b>ACT</b> look impressively light, powered almost entirely by renewables,  
+      while resource-heavy states show how geography and economy shape climate outcomes.
+    </p>
+  </aside>
+</section>
 
-    <!-- ROW 4: Two stacked cards on right column -->
-    <section class="pure-g grid-gap" style="margin-top:var(--gap)">
-      <div class="pure-u-1 pure-u-md-1-2">
-        <div class="card" style="height:100%">
-          <div class="subhead">Australia’s sector mix by year</div>
-          <p class="blurb">
-            Donut chart shows each sector’s share.<br/>
-            Hover to reveal exact values.<br/>
-            <b>Energy</b> dominates; <b>LULUCF</b> offsets more each year.
-          </p>
-          <div id="natPie" role="img" aria-label="National sector shares"></div>
-        </div>
-      </div>
-      <div class="pure-u-1 pure-u-md-1-2">
-        <div class="card" style="height:100%">
-          <div class="subhead">How sectors evolve over time</div>
-          <p class="blurb">
-            Stacked bars show sector contributions yearly.<br/>
-            Compare how proportions shift through time.<br/>
-            See slower growth and stronger offsets.<br/>
-            A story of Australia’s energy transition.
-          </p>
-          <div id="stackedBar" role="img" aria-label="National stacked bar by sector"></div>
-        </div>
-      </div>
-    </section>
+
+
+  <!-- ROW 4: Two-column — Left text, Right graph -->
+<section class="card alt"
+         style="margin-top:var(--gap); margin-bottom:var(--gap); column-gap:var(--gap);">
+  <!-- LEFT: narrative explanation -->
+  <aside style="max-width:340px; text-align:justify;">
+    <div class="subhead">How does Australia’s emission mix evolve?</div>
+
+    <p class="blurb" style="margin-top:10px; text-align:justify;">
+      Australia’s greenhouse gas composition has gradually shifted in recent years, reflecting both 
+      technological progress and changing land-use patterns. The <b>stacked bar chart</b> illustrates 
+      how total emissions are distributed across sectors from <b>2017 to 2022</b>, revealing a 
+      steady decline in <b>Energy-related</b> emissions — once the nation’s dominant source.  
+    </p>
+
+    <p class="blurb" style="text-align:justify;">
+      Meanwhile, <b>Land Use, Land-Use Change and Forestry (LULUCF)</b> plays a growing role in 
+      offsetting national totals, with negative values representing carbon absorbed by forests 
+      and restored ecosystems. Together with a modest reduction in <b>Industrial Processes</b> 
+      and <b>Waste</b>, these shifts suggest that Australia’s transition toward cleaner energy and 
+      improved carbon management is gradually taking effect.
+    </p>
+
+    <p class="note" style="margin-top:40px; text-align:justify;">
+      <b>Why this view?</b> Showing both sector proportions and totals over time helps explain 
+      not just <em>how much</em> emissions change, but <em>why</em> — highlighting the 
+      interaction between industrial decline, renewable adoption, and land-based carbon sinks.
+    </p>
+  </aside>
+
+  <!-- RIGHT: charts stacked vertically -->
+  <div>
+    <div id="natPie" role="img" aria-label="National sector shares"
+         style="min-height:280px; margin-bottom:20px;"></div>
+    <div id="stackedBar" role="img" aria-label="National stacked bar by sector"
+         style="min-height:280px;"></div>
+  </div>
+</section>
+
+
 
     <footer class="card" style="margin-top:var(--gap)">
       <b>Key insights:</b><br/>
@@ -330,3 +368,5 @@
   </script>
 </body>
 </html>
+
+

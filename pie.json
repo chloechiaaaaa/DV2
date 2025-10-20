@@ -1,31 +1,25 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Australia — Total (net) emissions, 2017–2023",
     "subtitle": "↓ 10.8% decrease from 2017–18 to 2022–23"
   },
-
   "data": {
     "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv"
   },
-
   "width": 760,
   "height": 300,
-
   "transform": [
     { "filter": "datum.Scope == 'Australia'" },
     { "filter": "datum['IPCC emissions source and sink categories'] == 'Total (net emissions)'" },
     { "calculate": "toNumber(datum.Value)", "as": "E_Gg" },
     { "calculate": "toNumber(substring(datum.Attribute,0,4))", "as": "YearNum" }
   ],
-
   "layer": [
     {
-      "mark": { "type": "rule", "stroke": "#efe7d1", "strokeWidth": 1.5 },
+      "mark": { "type": "rule", "stroke": "#efe7d1", "strokeWidth": 2.0 },
       "encoding": { "y": { "datum": 0 } }
     },
-
     {
       "mark": {
         "type": "line",
@@ -43,7 +37,7 @@
           "field": "E_Gg",
           "type": "quantitative",
           "title": "Emissions (Gg CO₂-e)",
-          "scale": { "domain": [430000, 520000] },
+          "scale": { "domain": [300000, 600000] },
           "axis": { "format": "," }
         },
         "tooltip": [
@@ -51,9 +45,78 @@
           { "field": "E_Gg", "title": "Net emissions (Gg CO₂-e)", "format": ",.0f" }
         ]
       }
+    },
+    {
+      "transform": [
+        { "aggregate": [ { "op": "argmin", "field": "E_Gg", "as": "min" } ] },
+        { "flatten": ["min.YearNum", "min.E_Gg", "min.Attribute"], "as": ["x", "y", "attr"] }
+      ],
+      "layer": [
+        {
+          "mark": { "type": "point", "filled": true, "size": 120, "color": "#0ea5e9", "stroke": "#0f172a", "strokeWidth": 1 },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "tooltip": [
+              { "field": "attr", "title": "Year" },
+              { "field": "y", "title": "Lowest emissions (Gg CO₂-e)", "format": ",.0f" }
+            ]
+          }
+        },
+        {
+          "mark": { "type": "text", "align": "left", "dx": 8, "dy": -8, "fontWeight": "bold", "color": "#0ea5e9" },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "text": { "value": "Lowest" }
+          }
+        },
+        {
+          "mark": { "type": "text", "align": "left", "dx": 8, "dy": 8, "color": "#475569" },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "text": { "field": "y", "type": "quantitative", "format": ",.0f" }
+          }
+        }
+      ]
+    },
+    {
+      "transform": [
+        { "aggregate": [ { "op": "argmax", "field": "E_Gg", "as": "max" } ] },
+        { "flatten": ["max.YearNum", "max.E_Gg", "max.Attribute"], "as": ["x", "y", "attr"] }
+      ],
+      "layer": [
+        {
+          "mark": { "type": "point", "filled": true, "size": 120, "color": "#ef4444", "stroke": "#0f172a", "strokeWidth": 1 },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "tooltip": [
+              { "field": "attr", "title": "Year" },
+              { "field": "y", "title": "Highest emissions (Gg CO₂-e)", "format": ",.0f" }
+            ]
+          }
+        },
+        {
+          "mark": { "type": "text", "align": "left", "dx": 8, "dy": -8, "fontWeight": "bold", "color": "#ef4444" },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "text": { "value": "Highest" }
+          }
+        },
+        {
+          "mark": { "type": "text", "align": "left", "dx": 8, "dy": 8, "color": "#475569" },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "text": { "field": "y", "type": "quantitative", "format": ",.0f" }
+          }
+        }
+      ]
     }
   ],
-
   "config": {
     "background": "#f5f0e6",
     "view": { "stroke": null, "fill": "#ffffff" },

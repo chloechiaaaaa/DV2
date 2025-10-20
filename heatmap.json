@@ -1,14 +1,30 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Emission Intensity by State (2017–2022 )",
+  "title": "Emission Intensity by State (2017–2022)",
   "data": {
     "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/Emission_Intensity.csv"
   },
-  "transform": [
-    { "calculate": "toNumber(substring(datum.Year, 0, 4 ))", "as": "YearStart" },
-    { "filter": "datum.YearStart >= 2017 && datum.YearStart <= 2022" }
+
+  "params": [
+    {
+      "name": "stateInput",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "name": "State: ",
+        "options": ["All","NSW","VIC","QLD","SA","WA","TAS","NT","ACT"]
+      }
+    }
   ],
+
+  "transform": [
+    { "calculate": "toNumber(substring(datum.Year, 0, 4))", "as": "YearStart" },
+    { "filter": "datum.YearStart >= 2017 && datum.YearStart <= 2022" },
+    { "filter": "stateInput == 'All' || datum.Attribute == stateInput" }
+  ],
+
   "mark": "rect",
+
   "encoding": {
     "x": { "field": "Year", "type": "ordinal", "title": "Year" },
     "y": {
@@ -20,8 +36,9 @@
     "color": {
       "field": "Value",
       "type": "quantitative",
-      "title": "Emission Intensity (t CO₂-e per capita)", "legend": {"titleLimit": 0},
-      "scale": { "scheme": "viridis" }
+      "title": "Emission Intensity (t CO₂-e per capita)",
+      "legend": { "titleLimit": 0 },
+      "scale": { "scheme": "blueorange" }
     },
     "tooltip": [
       { "field": "Attribute", "title": "State" },
@@ -29,11 +46,12 @@
       { "field": "Value", "title": "Intensity", "format": ".2f" }
     ]
   },
+
   "config": {
     "view": { "stroke": "transparent" },
     "axis": { "grid": false },
     "background": "#FFF8E7"
   },
-  "width": 650,
+  "width": 550,
   "height": 300
 }
