@@ -1,9 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Australia — Sector emissions by year (stacked, signed, 2017–2022)",
-  "data": {
-    "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv"
-  },
+  "data": { "url": "https://raw.githubusercontent.com/chloechiaaaaa/DV2/refs/heads/main/GHG_Inventory_AusTotal.csv" },
   "width": 580,
   "height": 360,
 
@@ -24,36 +22,17 @@
 
   "layer": [
     { "mark": { "type": "rule", "stroke": "#efe7d1", "strokeWidth": 1.5 }, "encoding": { "y": { "datum": 0 } } },
+
     {
       "mark": { "type": "bar", "cornerRadiusEnd": 2 },
       "encoding": {
-        "x": {
-          "field": "YearLabel",
-          "type": "ordinal",
-          "title": "Year",
-          "sort": [2017, 2018, 2019, 2020, 2021, 2022],
-          "axis": { "labelAngle": 0 }
-        },
-        "y": {
-          "field": "E_Sum",
-          "type": "quantitative",
-          "title": "Emissions (Gg CO₂-e)",
-          "stack": "zero",
-          "axis": { "format": "," }
-        },
+        "x": { "field": "YearLabel", "type": "ordinal", "title": "Year", "sort": [2017, 2018, 2019, 2020, 2021, 2022], "axis": { "labelAngle": 0 } },
+        "y": { "field": "E_Sum", "type": "quantitative", "title": "Emissions (Gg CO₂-e)", "stack": "zero", "axis": { "format": "," } },
         "color": {
-          "field": "SectorShort",
-          "type": "nominal",
-          "title": "Sector",
+          "field": "SectorShort", "type": "nominal", "title": "Sector",
           "scale": {
-            "domain": [
-              "1. Energy",
-              "2.  Industrial Processes",
-              "3.  Agriculture",
-              "4. Land Use & Forestry (LULUCF)",
-              "5.  Waste"
-            ],
-            "range": ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"]
+            "domain": ["1. Energy","2.  Industrial Processes","3.  Agriculture","4. Land Use & Forestry (LULUCF)","5.  Waste"],
+            "range": ["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2"]
           },
           "legend": { "orient": "right" }
         },
@@ -64,19 +43,42 @@
           { "field": "Share", "title": "Share of year", "format": ".1%" }
         ]
       }
+    },
+
+    
+    {
+      "transform": [
+        { "aggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["YearLabel"] },
+        { "window": [{ "op": "rank", "as": "r" }], "sort": [{ "field": "YearTotal", "order": "descending" }] },
+        { "filter": "datum.r == 1" }
+      ],
+      "mark": { "type": "text", "align": "left", "dx": 6, "dy": 10, "fontSize": 11, "fontWeight": "bold", "color": "#e11d48" },
+      "encoding": {
+        "x": { "field": "YearLabel", "type": "ordinal" },
+        "y": { "field": "YearTotal", "type": "quantitative" },
+        "text": { "value": "Energy largest: electricity + transport fuel use" }
+      }
+    },
+
+    {
+      "transform": [
+        { "aggregate": [{ "op": "sum", "field": "E_Sum", "as": "YearTotal" }], "groupby": ["YearLabel"] },
+        { "window": [{ "op": "rank", "as": "r" }], "sort": [{ "field": "YearTotal", "order": "ascending" }] },
+        { "filter": "datum.r == 1" }
+      ],
+      "mark": { "type": "text", "align": "right", "dx": -6, "dy": 235, "fontSize": 11, "fontWeight": "bold", "color": "#0ea5e9" },
+      "encoding": {
+        "x": { "field": "YearLabel", "type": "ordinal" },
+        "y": { "field": "YearTotal", "type": "quantitative" },
+        "text": { "value": "Waste smallest: landfill & wastewater are minor sources" }
+      }
     }
   ],
 
   "config": {
     "background": "#f5f0e6",
     "view": { "stroke": null, "fill": "#ffffff" },
-    "axis": {
-      "grid": true,
-      "gridColor": "#efe7d1",
-      "tickColor": "#e5decf",
-      "labelColor": "#0f172a",
-      "titleColor": "#0f172a"
-    },
+    "axis": { "grid": true, "gridColor": "#efe7d1", "tickColor": "#e5decf", "labelColor": "#0f172a", "titleColor": "#0f172a" },
     "legend": { "labelColor": "#0f172a", "titleColor": "#0f172a", "symbolType": "circle" },
     "title": { "color": "#0f172a", "fontWeight": 700 },
     "numberFormat": ","

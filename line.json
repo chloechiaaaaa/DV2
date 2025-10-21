@@ -69,11 +69,11 @@
     {
       "mark": {
         "type": "text",
-        "text": "Emission drop",
+        "text": "Emission drop due to COVID-19",
         "angle": 0,
         "fontWeight": "bold",
         "color": "red",
-        "dx": 40,
+        "dx": 90,
         "dy": 20
       },
       "encoding": {

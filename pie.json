@@ -60,11 +60,11 @@
           }
         },
         {
-          "mark": { "type": "text", "align": "left", "dx": 8, "dy": -8, "fontWeight": "bold", "color": "#0ea5e9" },
+          "mark": { "type": "text", "align": "left", "dx": -10, "dy": 20, "fontWeight": "bold", "color": "#0ea5e9" },
           "encoding": {
             "x": { "field": "YearNum", "type": "quantitative" },
             "y": { "field": "E_Gg", "type": "quantitative" },
-            "text": { "value": "Lowest" }
+            "text": { "value": "Lowest: COVID lockdowns cut transport & electricity demand" }
           }
         },
         {
@@ -95,7 +95,7 @@
           "encoding": {
             "x": { "field": "YearNum", "type": "quantitative" },
             "y": { "field": "E_Gg", "type": "quantitative" },
-            "text": { "value": "Highest" }
+            "text": { "value": "Highest: Pre-COVID coal-heavy electricity & travel demand" }
           }
         },
         {
